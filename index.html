@@ -290,6 +290,16 @@
             background: #c0392b;
         }
 
+        /* Success Message */
+        .success-message {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
         /* Footer */
         footer {
             background: #2c3e50;
@@ -369,7 +379,7 @@
                     <p>Complete exterior house cleaning using safe, effective pressure washing techniques that remove dirt, grime, and mildew without damaging your siding.</p>
                 </div>
                 <div class="service-card fade-in">
-                    <div class="service-icon">🏠</div>
+                    <div class="service-icon">🚿</div>
                     <h3>Pressure Washing</h3>
                     <p>High-pressure cleaning for driveways, sidewalks, patios, and other hard surfaces. Remove years of buildup and restore original appearance.</p>
                 </div>
@@ -442,25 +452,57 @@
                         <span>Available Whenever You Need Us</span>
                     </div>
                 </div>
+                
+                <!-- WORKING FORMSPREE CONTACT FORM -->
                 <form class="contact-form fade-in" action="https://formspree.io/f/mkgvwqdy" method="POST">
+                    <div class="success-message" id="successMessage">
+                        Thank you! Your quote request has been sent successfully. We'll contact you within 24 hours!
+                    </div>
+                    
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Name *</label>
                         <input type="text" id="name" name="name" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input type="email" id="email" name="email" required>
                     </div>
+                    
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="tel" id="phone" name="phone">
                     </div>
+                    
                     <div class="form-group">
-                        <label for="message">Tell us about your project</label>
-                        <textarea id="message" name="message" placeholder="What services are you interested in? Property size? Any specific concerns?"></textarea>
+                        <label for="address">Property Address</label>
+                        <input type="text" id="address" name="address" placeholder="Street address for quote">
                     </div>
-                    <input type="hidden" name="_next" value="https://luxuriousprowash-maker.github.io/luxuriousprowash.github.io/">
-                    <input type="hidden" name="_subject" value="New Quote Request from Website">
+                    
+                    <div class="form-group">
+                        <label for="services">Services Needed</label>
+                        <select id="services" name="services">
+                            <option value="">Select a service...</option>
+                            <option value="House Washing">House Washing</option>
+                            <option value="Pressure Washing">Pressure Washing (Driveway/Patio)</option>
+                            <option value="Soft Washing">Soft Washing</option>
+                            <option value="Roof Washing">Roof Washing</option>
+                            <option value="Window Washing">Window Washing</option>
+                            <option value="Commercial Cleaning">Commercial Cleaning</option>
+                            <option value="Multiple Services">Multiple Services</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Project Details</label>
+                        <textarea id="message" name="message" placeholder="Tell us about your project: property size, specific areas to clean, timeline, any special concerns..."></textarea>
+                    </div>
+                    
+                    <!-- Formspree Configuration -->
+                    <input type="hidden" name="_next" value="https://luxuriousprowash-maker.github.io/luxuriousprowash.github.io/?success=true">
+                    <input type="hidden" name="_subject" value="New Quote Request - Luxurious Pro Wash">
+                    <input type="hidden" name="_captcha" value="false">
+                    
                     <button type="submit" class="submit-btn">Request Free Quote</button>
                 </form>
             </div>
@@ -469,7 +511,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Luxurious Pro Wash. All rights reserved.</p>
+            <p>&copy; 2025 Luxurious Pro Wash. All rights reserved. | Licensed & Insured | Serving Orlando & Surrounding Areas</p>
         </div>
     </footer>
 
@@ -506,14 +548,41 @@
             observer.observe(el);
         });
 
-        // Form submission handler
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your interest! We\'ll contact you within 24 hours with your free quote.');
-            this.reset();
-        });
+        // Show success message if redirected back with success parameter
+        if (window.location.search.includes('success=true')) {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 10000); // Hide after 10 seconds
+            }
+            
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
 
-        // Mobile menu toggle (if needed)
+        // Style the select dropdown
+        const selectStyle = document.createElement('style');
+        selectStyle.textContent = `
+            select {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                background: rgba(255,255,255,0.9);
+                font-size: 1rem;
+                cursor: pointer;
+            }
+            
+            select option {
+                background: white;
+                color: #333;
+            }
+        `;
+        document.head.appendChild(selectStyle);
+
+        // Mobile menu toggle
         const logo = document.querySelector('.logo');
         logo.addEventListener('click', function() {
             window.scrollTo({top: 0, behavior: 'smooth'});
